@@ -1,8 +1,10 @@
 {
-  "name": "puppetshow",
+  "name": "@zbo14/puppetshow",
   "version": "0.0.0",
   "description": "A command-line utility for sequentially viewing webpages in a browser window",
-  "bin": "index.js",
+  "bin": {
+    "puppetshow": "index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

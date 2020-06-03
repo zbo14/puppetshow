@@ -4,11 +4,18 @@ A command-line utility for sequentially viewing webpages in a browser window.
 
 ## Install
 
-`npm i puppetshow`
+`npm i @zbo14/puppetshow`
 
 ## Usage
 
 ```
+                     _       _
+ ___ _ _ ___ ___ ___| |_ ___| |_ ___ _ _ _
+| . | | | . | . | -_|  _|_ -|   | . | | | |
+|  _|___|  _|  _|___|_| |___|_|_|___|_____|
+|_|     |_| |_|
+
+
 Usage: puppetshow [options] <file>
 
 Options:
