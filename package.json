@@ -1,0 +1,31 @@
+{
+  "name": "puppetshow",
+  "version": "0.0.0",
+  "description": "A command-line utility for sequentially viewing webpages in a browser window",
+  "bin": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "browser-automation",
+    "bug-bounty",
+    "chromium",
+    "cli",
+    "puppeteer",
+    "recon"
+  ],
+  "author": "Zachary Balder",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "5.1.0",
+    "puppeteer": "3.2.0"
+  },
+  "devDependencies": {
+    "eslint": "7.1.0",
+    "eslint-config-standard": "14.1.1",
+    "eslint-plugin-import": "2.20.2",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-standard": "4.0.1"
+  }
+}
