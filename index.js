@@ -72,7 +72,8 @@ program
       process.exit()
     })
 
-    let forward, url
+    let forward = true
+    let url
 
     for (let i = 0; i < urls.length;) {
       url = urls[i]
