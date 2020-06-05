@@ -1,9 +1,13 @@
 {
   "name": "@zbo14/puppetshow",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "description": "A command-line utility for sequentially viewing webpages in a browser window",
   "bin": {
     "puppetshow": "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zbo14/puppetshow"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -24,6 +24,7 @@ Options:
   -k, --insecure        ignore HTTPS errors
   -p, --proto <string>  protocol to prepend to IP addresses and hostnames (default: "https")
   -q, --quiet           don't show banner and info
+  -r, --reverse         visit URLs in reverse order
   -h, --help            display help for command
 ```
 

@@ -27,6 +27,7 @@ program
   .option('-k, --insecure', 'ignore HTTPS errors')
   .option('-p, --proto <string>', 'protocol to prepend to IP addresses and hostnames', 'https')
   .option('-q, --quiet', 'don\'t show banner and info')
+  .option('-r, --reverse', 'visit URLs in reverse order')
   .action(async (file, opts) => {
     let data
 
@@ -45,6 +46,8 @@ program
     }
 
     const urls = data.split('\n').filter(Boolean)
+
+    opts.reverse && urls.reverse()
 
     if (!opts.quiet) {
       error(banner)
@@ -69,7 +72,7 @@ program
       process.exit()
     })
 
-    let url
+    let forward, url
 
     for (let i = 0; i < urls.length;) {
       url = urls[i]
@@ -81,6 +84,7 @@ program
       try {
         await page.goto(url, { timeout: 5e3 })
       } catch {
+        forward ? ++i : --i
         continue
       }
 
@@ -88,6 +92,8 @@ program
 
       while (true) {
         const [, { name, ctrl }] = await once(process.stdin, 'keypress')
+
+        forward = true
 
         if (name === 'c' && ctrl) {
           page.emit('close')
@@ -105,6 +111,7 @@ program
         } else if (name === 'p') {
           if (i) {
             --i
+            forward = false
             break
           } else {
             opts.quiet || error('[!] No previous URL to visit')
