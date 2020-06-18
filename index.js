@@ -21,7 +21,7 @@ process.stdin.setEncoding('utf8')
 const program = new commander.Command()
 
 program
-  .version('0.0.0')
+  .version('0.3.1')
   .arguments('<file>')
   .option('-d, --dev-tools', 'open dev-tools in browser window')
   .option('-k, --insecure', 'ignore HTTPS errors')
