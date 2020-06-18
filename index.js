@@ -25,9 +25,10 @@ program
   .arguments('<file>')
   .option('-d, --dev-tools', 'open dev-tools in browser window')
   .option('-k, --insecure', 'ignore HTTPS errors')
-  .option('-p, --proto <string>', 'protocol to prepend to IP addresses and hostnames', 'https')
+  .option('-p, --protocols <string>', 'comma-separated list of protocols to prepend to IP addresses/hostnames', 'http,https')
   .option('-q, --quiet', 'don\'t show banner and info')
-  .option('-r, --reverse', 'visit URLs in reverse order')
+  .option('-r, --reverse', 'visit endpoints in reverse order')
+  .option('-x, --proxy <[proto://]host:port>', 'use proxy for chromium')
   .action(async (file, opts) => {
     let data
 
@@ -38,23 +39,34 @@ program
       process.exit(1)
     }
 
-    const proto = opts.proto.trim().toLowerCase()
+    const protos = opts.protocols
+      .toLowerCase()
+      .split(',')
+      .map(proto => proto.trim())
+      .filter(Boolean)
 
-    if (!['http', 'https'].includes(proto)) {
-      error('[!] Unsupported protocol: ' + proto)
-      process.exit(1)
-    }
+    protos.forEach(proto => {
+      if (!['http', 'https'].includes(proto)) {
+        error('[!] Unsupported protocol: ' + proto)
+        process.exit(1)
+      }
+    })
 
-    const urls = data.split('\n').filter(Boolean)
+    const targets = data.split('\n').filter(Boolean)
 
-    opts.reverse && urls.reverse()
+    opts.reverse && targets.reverse()
 
     if (!opts.quiet) {
       error(banner)
       warn('[-] Loaded file')
     }
 
+    const args = []
+
+    opts.proxy && args.push('--proxy-server=' + opts.proxy)
+
     const browser = await puppeteer.launch({
+      args,
       devtools: opts.devTools,
       headless: false,
       ignoreHTTPSErrors: opts.insecure
@@ -72,15 +84,27 @@ program
       process.exit()
     })
 
+    const urls = []
+
+    targets.forEach(target => {
+      for (const proto of protos) {
+        if (target.startsWith(proto + '://')) {
+          return urls.push(target)
+        }
+      }
+
+      protos.forEach(proto => urls.push(proto + '://' + target))
+    })
+
+    console.log(urls)
+
+    warn(`[-] Found ${urls.length} URLs`)
+
     let forward = true
     let url
 
     for (let i = 0; i < urls.length;) {
       url = urls[i]
-
-      if (!url.startsWith('http')) {
-        url = proto + '://' + url
-      }
 
       try {
         await page.goto(url, { timeout: 5e3 })
@@ -94,12 +118,11 @@ program
       while (true) {
         const [, { name, ctrl }] = await once(process.stdin, 'keypress')
 
+        if (name === 'c' && ctrl) return page.emit('close')
+
         forward = true
 
-        if (name === 'c' && ctrl) {
-          page.emit('close')
-          return
-        } else if (name === 'n') {
+        if (name === 'n') {
           if (i + 1 === urls.length) {
             if (!opts.quiet) {
               error('[!] No more URLs!')
