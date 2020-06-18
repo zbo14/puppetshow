@@ -21,7 +21,7 @@ process.stdin.setEncoding('utf8')
 const program = new commander.Command()
 
 program
-  .version('0.3.2')
+  .version('0.3.3')
   .arguments('<file>')
   .option('-d, --dev-tools', 'open dev-tools in browser window')
   .option('-k, --insecure', 'ignore HTTPS errors')
@@ -95,8 +95,6 @@ program
 
       protos.forEach(proto => urls.push(proto + '://' + target))
     })
-
-    console.log(urls)
 
     opts.quiet || warn(`[-] Found ${urls.length} URLs`)
 
