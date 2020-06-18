@@ -21,7 +21,7 @@ process.stdin.setEncoding('utf8')
 const program = new commander.Command()
 
 program
-  .version('0.3.1')
+  .version('0.3.2')
   .arguments('<file>')
   .option('-d, --dev-tools', 'open dev-tools in browser window')
   .option('-k, --insecure', 'ignore HTTPS errors')
@@ -98,7 +98,7 @@ program
 
     console.log(urls)
 
-    warn(`[-] Found ${urls.length} URLs`)
+    opts.quiet || warn(`[-] Found ${urls.length} URLs`)
 
     let forward = true
     let url
