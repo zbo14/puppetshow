@@ -67,6 +67,7 @@ program
 
     const browser = await puppeteer.launch({
       args,
+      defaultViewport: null,
       devtools: opts.devTools,
       headless: false,
       ignoreHTTPSErrors: opts.insecure
